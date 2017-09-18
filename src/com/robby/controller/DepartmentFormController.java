@@ -54,24 +54,14 @@ public class DepartmentFormController implements Initializable {
                 mainController.getDepartmentDao().deleteData(selectedDepartment);
                 mainController.getDepartments().clear();
                 mainController.getDepartments().addAll(mainController.getDepartmentDao().showAllData());
-                txtCode.setDisable(false);
-                txtCode.clear();
-                txtName.clear();
-                btnDelete.setDisable(true);
-                btnSave.setDisable(false);
-                btnUpdate.setDisable(true);
+                this.resetFieldAndButton();
             }
         });
     }
 
     @FXML
     private void btnResetAction(ActionEvent event) {
-        txtCode.setDisable(false);
-        txtCode.clear();
-        txtName.clear();
-        btnDelete.setDisable(true);
-        btnSave.setDisable(false);
-        btnUpdate.setDisable(true);
+        this.resetFieldAndButton();
     }
 
     @FXML
@@ -97,12 +87,7 @@ public class DepartmentFormController implements Initializable {
             mainController.getDepartmentDao().updateData(selectedDepartment);
             mainController.getDepartments().clear();
             mainController.getDepartments().addAll(mainController.getDepartmentDao().showAllData());
-            txtCode.setDisable(false);
-            txtCode.clear();
-            txtName.clear();
-            btnDelete.setDisable(true);
-            btnSave.setDisable(false);
-            btnUpdate.setDisable(true);
+            this.resetFieldAndButton();
         } else {
             ViewUtil.showAlert(Alert.AlertType.ERROR, "Error", "Please fill all field");
         }
@@ -136,5 +121,15 @@ public class DepartmentFormController implements Initializable {
             btnSave.setDisable(true);
             btnUpdate.setDisable(false);
         }
+    }
+
+    private void resetFieldAndButton() {
+        txtCode.setDisable(false);
+        txtCode.clear();
+        txtName.clear();
+        btnDelete.setDisable(true);
+        btnSave.setDisable(false);
+        btnUpdate.setDisable(true);
+        selectedDepartment = null;
     }
 }
