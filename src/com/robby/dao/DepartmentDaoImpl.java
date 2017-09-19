@@ -24,12 +24,13 @@ public class DepartmentDaoImpl implements DaoService<Department> {
         try {
             Connection connection = DBUtil.createMySQLConnection();
             String query = "INSERT INTO department(code, name) VALUES(?, ?)";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, object.getCode());
-            ps.setString(2, object.getName());
-            if (ps.executeUpdate() != 0) {
-                connection.commit();
-                result = 1;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, object.getCode());
+                ps.setString(2, object.getName());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             ViewUtil.showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
@@ -43,11 +44,12 @@ public class DepartmentDaoImpl implements DaoService<Department> {
         try {
             Connection connection = DBUtil.createMySQLConnection();
             String query = "DELETE FROM department WHERE id = ?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, object.getId());
-            if (ps.executeUpdate() != 0) {
-                connection.commit();
-                result = 1;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, object.getId());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             ViewUtil.showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
@@ -61,14 +63,14 @@ public class DepartmentDaoImpl implements DaoService<Department> {
         try {
             Connection connection = DBUtil.createMySQLConnection();
             String query = "SELECT * FROM department ORDER BY code";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Department department = new Department();
-                department.setId(rs.getInt("id"));
-                department.setCode(rs.getString("code"));
-                department.setName(rs.getString("name"));
-                departments.add(department);
+            try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Department department = new Department();
+                    department.setId(rs.getInt("id"));
+                    department.setCode(rs.getString("code"));
+                    department.setName(rs.getString("name"));
+                    departments.add(department);
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             ViewUtil.showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
@@ -82,12 +84,13 @@ public class DepartmentDaoImpl implements DaoService<Department> {
         try {
             Connection connection = DBUtil.createMySQLConnection();
             String query = "UPDATE department SET name = ? WHERE id = ?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, object.getName());
-            ps.setInt(2, object.getId());
-            if (ps.executeUpdate() != 0) {
-                connection.commit();
-                result = 1;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, object.getName());
+                ps.setInt(2, object.getId());
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             ViewUtil.showAlert(Alert.AlertType.ERROR, "Error", ex.getMessage());
