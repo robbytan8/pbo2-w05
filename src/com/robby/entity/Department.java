@@ -1,6 +1,8 @@
 package com.robby.entity;
 
 import java.io.Serializable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  *
@@ -8,11 +10,15 @@ import java.io.Serializable;
  */
 public class Department implements Serializable {
 
+    private static final long serialVersionUID = 20171L;
+
     private int id;
     private String code;
     private String name;
+    private final BooleanProperty statusProperty = new SimpleBooleanProperty();
 
     public Department() {
+        statusProperty.setValue(Boolean.TRUE);
     }
 
     public Department(int id, String code, String name) {
@@ -43,6 +49,22 @@ public class Department implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    private boolean isStatus() {
+        return statusProperty.get();
+    }
+
+    public BooleanProperty getStatusProperty() {
+        return statusProperty;
+    }
+
+    private void setStatus(boolean value) {
+        statusProperty.set(value);
+    }
+
+    private BooleanProperty statusProperty() {
+        return statusProperty;
     }
 
     @Override
